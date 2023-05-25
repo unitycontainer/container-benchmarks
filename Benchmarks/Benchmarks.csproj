@@ -1,33 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Description>Unity Container Regression Tests</Description>
-    <Copyright>Copyright © .NET Foundation and Contributors. All Rights Reserved</Copyright>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>package.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
-    <UnityContainer>..\..\Container\src\Unity.Container.csproj</UnityContainer>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework Condition="$(TargetFramework) == ''">netstandard2.1</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFrameworks Condition="!Exists('$(UnityContainer)')">net462;net472;net48;net50</TargetFrameworks>
-    <TargetFramework Condition="Exists('$(UnityContainer)')">net50</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>package.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>false</DelaySign>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
-    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.12.1" />
+	<ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Condition="'$(TargetFramework)' == 'net462'" Include="Unity" Version="4.0.1" />
-    <PackageReference Condition="'$(TargetFramework)' == 'net472'" Include="Unity.Container" Version="5.11.*" />
-    <PackageReference Condition="'$(TargetFramework)' == 'net48'" Include="Unity.Container" Version="6.0.*-*" />
+    <ProjectReference Include="..\Base\Container.Adapter.csproj" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net50'">
-    <ProjectReference Condition="Exists('$(UnityContainer)')" Include="$(UnityContainer)" />
-    <PackageReference Condition="!Exists('$(UnityContainer)')" Include="Unity.Container" Version="6.0.*-*" />
-  </ItemGroup>
-
 </Project>

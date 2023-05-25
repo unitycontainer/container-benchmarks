@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Unity v5 -->
+  
+  <PropertyGroup>
+    <TargetFramework Condition="$(TargetFramework) == ''">netstandard2.1</TargetFramework> 
+    <UnityContainer>..\Container\src\Unity.Container.csproj</UnityContainer>
+    <DefineConstants>UNITY_V5;$(DefineConstants)</DefineConstants>
+	<LangVersion>latest</LangVersion>
+    <OutDir>$(SolutionDir)artifacts\$(Configuration)\Adapters\$(MSBuildProjectName)</OutDir>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)Benchmarks\package.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Base\Container.Adapter.csproj" />
+    <ProjectReference Condition="Exists('$(UnityContainer)') " Include="$(UnityContainer)" />
+    <PackageReference Condition="!Exists('$(UnityContainer)')" Include="Unity.Container" Version="5.11.*" />
+  </ItemGroup>
+
+  <!-- Configuration Settings -->
+
+  <PropertyGroup>
+    <DefineConstants Condition="'$(Configuration)'=='v5'">$(DefineConstants);BEHAVIOR_V5</DefineConstants>
+    <DefineConstants Condition="'$(Configuration)'=='Release'">$(DefineConstants);BEHAVIOR_V5</DefineConstants>
+  </PropertyGroup>
+
+
+  <!-- v5 Exclusions -->
+  
+  <ItemGroup>
+  	<Compile Remove="**\*.v4.cs" />
+  	<Compile Remove="**\*.!v5.cs" />
+  	<Compile Remove="**\*.v6.cs" />
+  	<Compile Remove="**\*.v7.cs" />
+  	<Compile Remove="**\*.v8.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Using Remove="System.Net.Http" />
+  	<Compile Remove="obj\**" />
+  	<Compile Remove="bin\**" />
+    <None Remove="obj\**" />
+    <None Remove="bin\**" />
+    <None Remove=".git" />
+    <None Remove=".gitignore" />
+    <None Remove="NuGet.Config" />
+	<None Remove="*.slnf" />
+    <None Remove="*.props" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
+</Project>

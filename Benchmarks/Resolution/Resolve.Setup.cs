@@ -1,43 +1,30 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
-#if NET462
-using Microsoft.Practices.Unity;
-#else
-using Unity.Injection;
-using Unity.Lifetime;
-using Unity;
-#endif
+using System.IO;
+using System.Reflection;
 
 namespace Unity.Benchmarks
 {
     public partial class ResolutionBenchmarks
     {
-#if NET462 || NET472
-        protected IUnityContainer      Container;
-#else
-        protected IUnityContainer      Container;
-        protected IUnityContainerAsync ContainerAsync;
-        protected IServiceProvider     ServiceProvider;
-#endif
+        protected ContainerAdapter Container;
 
+        [Params("v4", "v5", "v6", "v8")]
+        public string Unity;
 
-        [GlobalSetup]
-        public virtual void GlobalSetup()
+        [IterationSetup]
+        public void IterationSetup()
         {
-            Container = new UnityContainer()
-                .RegisterType(typeof(TestGeneric<>))
-                .RegisterType(typeof(Service), new ContainerControlledLifetimeManager());
-#if !NET462 && !NET472
-            ContainerAsync = (IUnityContainerAsync)Container;
-            ServiceProvider = (IServiceProvider)Container;
-#endif
+            var path = Path.GetFullPath($"..\\..\\..\\..\\..\\Adapters\\Container.{Unity}",
+                       Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
-            for (var i = 0; i < 100; i++)
-            {
-                Container.RegisterInstance(i.ToString(), i);
-            }
+            Directory.SetCurrentDirectory(path);
+
+            var type = Assembly.LoadFrom($"Container.{Unity}.dll")
+                               .GetType($"Unity.{Unity}.UnityAdapter");
+
+            Container = (ContainerAdapter)Activator.CreateInstance(type);
         }
-
 
         public interface IService { }
 

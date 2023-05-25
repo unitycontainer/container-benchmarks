@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
+    <OutDir>$(SolutionDir)\artifacts\$(Configuration)\$(MSBuildProjectName)</OutDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,14 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
-    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.12.1" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Adapters\V4\Unity.v4.csproj" />
-    <ProjectReference Include="..\Adapters\V5\Unity.v5.csproj" />
-    <ProjectReference Include="..\Adapters\V6\Unity.v6.csproj" />
+    <ProjectReference Include="..\Benchmarks\Benchmarks.csproj" />
   </ItemGroup>
 
 </Project>
