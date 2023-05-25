@@ -10,4 +10,8 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet.Annotations" Version="0.13.5" />
+  </ItemGroup>
+
 </Project>

@@ -20,14 +20,28 @@ namespace Unity.vX;
 
 public class UnityAdapter : ContainerAdapter
 {
-    private readonly UnityContainer _container;
+    private readonly IUnityContainer _container;
 
-    public UnityAdapter()
-    {
-        _container = new UnityContainer();
-    }
+    public UnityAdapter() => _container = new UnityContainer();
+
+    public override object IUnityContainer() => _container.Resolve(typeof(IUnityContainer));
 
     public override object Resolve(Type type) => _container.Resolve(type);
 
-    public override object IUnityContainer() => _container.Resolve(typeof(IUnityContainer));
+    public override object Resolve(Type type, string name) => _container.Resolve(type, name);
+
+
+    
+    public override object RegisterType(Type type) => _container.RegisterType(null, type, null, null);
+
+    public override object RegisterType(Type type, Type map) => _container.RegisterType(type, map, null, null);
+
+    public override object RegisterType(Type type, string name) => _container.RegisterType(null, type, name, null);
+
+
+
+    public override object RegisterInstance(Type type, object instance) => _container.RegisterInstance(type, null, instance);
+
+    public override object RegisterInstance(Type type, string name, object instance) => _container.RegisterInstance(type, name, instance);
+
 }
