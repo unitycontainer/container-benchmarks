@@ -28,4 +28,6 @@ public class UnityAdapter : ContainerAdapter
     }
 
     public override object Resolve(Type type) => _container.Resolve(type);
+
+    public override object IUnityContainer() => _container.Resolve(typeof(IUnityContainer));
 }
