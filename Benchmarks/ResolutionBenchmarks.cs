@@ -2,8 +2,20 @@
 
 namespace Unity.Benchmarks
 {
-    public partial class ResolutionBenchmarks
+    public partial class ResolutionBenchmarks : BenchmarksBase
     {
+        #region Built-In
+
+        [BenchmarkCategory("resolve", "IUnityContainer")]
+        [Benchmark(Description = "Resolve<IUnityContainer>( )")]
+        public object ResolveIUnityContainer()
+            => Container.IUnityContainer();
+
+        #endregion
+
+
+        #region Resolution
+
         [Benchmark(Description = "Resolve<object>()")]
         [BenchmarkCategory("resolve", "IUnityContainer")]
         public object ResolveObject()
@@ -20,5 +32,20 @@ namespace Unity.Benchmarks
         [BenchmarkCategory("resolve", "registered", "IUnityContainer")]
         public object Resolve_Registered_Named()
             => Container.Resolve(typeof(Service), Name);
+
+        #endregion
+
+
+        #region Scaffolding
+
+        public override void IterationSetup()
+        {
+            base.IterationSetup();
+
+            Container.RegisterType(typeof(Service));
+            Container.RegisterType(typeof(Service), Name);
+        }
+
+        #endregion
     }
 }
