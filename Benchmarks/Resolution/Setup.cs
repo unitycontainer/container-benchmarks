@@ -1,11 +1,15 @@
 ﻿using BenchmarkDotNet.Attributes;
-using System;
-using System.IO;
-using System.Reflection;
 
 namespace Unity.Benchmarks
 {
     public partial class ResolutionBenchmarks : BenchmarksBase
     {
+        public override void IterationSetup()
+        {
+            base.IterationSetup();
+
+            Container.RegisterType(typeof(Service));
+            Container.RegisterType(typeof(Service), Name);
+        }
     }
 }

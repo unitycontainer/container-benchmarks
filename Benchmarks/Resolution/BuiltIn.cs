@@ -4,14 +4,15 @@ namespace Unity.Benchmarks
 {
     public partial class ResolutionBenchmarks
     {
-        [Benchmark(Description = "IUnityContainer<object>()")]
-        [BenchmarkCategory("resolve", "object", "IUnityContainer")]
-        public object Resolve_Object_IUnityContainer()
+        [Benchmark(Description = "Resolve<object>()")]
+        [BenchmarkCategory("resolve", "IUnityContainer")]
+        public object ResolveObject()
             => Container.Resolve(typeof(object));
-        
 
-        [Benchmark(Description = "IUnityContainer<IUnityContainer>( )")]
-        public object Resolve_IUnityContainer_IUnityContainer()
+
+        [BenchmarkCategory("resolve", "IUnityContainer")]
+        [Benchmark(Description = "Resolve<IUnityContainer>( )")]
+        public object ResolveIUnityContainer()
             => Container.IUnityContainer();
     }
 }

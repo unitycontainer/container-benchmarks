@@ -10,12 +10,14 @@ namespace Unity.Benchmarks
     public abstract class BenchmarksBase
     {
         protected ContainerAdapter Container;
+        protected string Name = "name";
+
 
         [Params("v4", "v5", "v6", "v8")]
         public string Unity;
 
         [IterationSetup]
-        public void IterationSetup()
+        public virtual void IterationSetup()
         {
             var path = Path.GetFullPath($"..\\..\\..\\..\\..\\Adapters\\Container.{Unity}",
                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
